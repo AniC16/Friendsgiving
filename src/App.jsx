@@ -15,9 +15,9 @@ function QuestionModal({ activeClue, onClose }) {
           <div className="modal-title">
             {category.name} – ${clue.value}
           </div>
-          <button className="modal-close" onClick={() => onClose(clue)}>
-            ✕
-          </button>
+          <button className="modal-close" onClick={() => onClose(false)}>
+  ✕
+</button>
         </div>
 
         <div className="modal-body">
@@ -47,9 +47,9 @@ function QuestionModal({ activeClue, onClose }) {
         </div>
 
         <div className="modal-footer">
-          <button className="primary-btn" onClick={() => onClose(clue)}>
-            Mark as Used
-          </button>
+        <button className="primary-btn" onClick={() => onClose(true)}>
+  Mark as Used
+</button>
         </div>
       </div>
     </div>
@@ -117,14 +117,17 @@ export default function App() {
     );
   };
 
-  const handleCloseModal = (clue) => {
-    setUsedIds((prev) => {
-      const next = new Set(prev);
-      next.add(clue.id);
-      return next;
-    });
+  const handleCloseModal = (shouldMarkUsed) => {
+    if (shouldMarkUsed && activeClue) {
+      setUsedIds(prev => {
+        const next = new Set(prev);
+        next.add(activeClue.clue.id);
+        return next;
+      });
+    }
     setActiveClue(null);
   };
+  
 
   if (!started) {
     return (
